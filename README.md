@@ -14,6 +14,10 @@ Automated checks support development; they are not a guarantee that every enviro
 > Public preview v0.1.10 · MIT licensed · Windows launchers included.
 > See the release review for verification scope and remaining environment checks.
 
+### Optional finance companion
+
+[Ctrl Ur Finances Starter](https://github.com/doublediamondlabs/Ctrl-UR-Finances-Starter/releases) provides offline household finances and optional business tools, including travel-data exchange with RōM. Both applications work independently.
+
 ## What it does
 
 - Compares mileage, MPG ranges, fuel prices and high/low fuel allowances.
