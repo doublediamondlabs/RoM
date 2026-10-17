@@ -1,5 +1,5 @@
-PUBLIC PREVIEW — v0.1.9
-RōM — v0.1.9
+PUBLIC PREVIEW — v0.1.10
+RōM — v0.1.10
 Developed by Double Diamond Labs - Adventure On!
 
 This complete release adds compact Settings and Travel Defaults tabs, sidebar
@@ -22,7 +22,7 @@ FIRST INSTALL — KEEP THIS SEPARATE FROM EXPENSE BOOK AND SEO GENIE
    in the shared application folder.
 5. Open RōM using its desktop shortcut. You can also run
    Start-App.bat. Use Start-App-Diagnostics.bat if startup needs investigation.
-6. Confirm v0.1.9 at the bottom of the sidebar. Start with Travel Defaults,
+6. Confirm v0.1.10 at the bottom of the sidebar. Start with Travel Defaults,
    save your preferences, then create a Personal or Inspection trip. Expense Book
    file exchange is optional; see EXPENSE-BOOK-HANDOFF.md if you use it.
 
@@ -182,7 +182,7 @@ network-share behavior, and native browser print pagination still need your
 first-run check on your computers. If a save fails, edits remain on screen;
 Export Current Copy before trying Reload.
 
-INSPECTION HANDOFF (EXPENSES ADDED IN v0.1.9)
+INSPECTION HANDOFF
 Plan from Expense Book creates the trip from the scheduled visit. Reimports
 refresh that linked trip while preserving travel plans. Expense Book Handoff
 prepares selected itemized expenses and actual mileage/notes to return. See EXPENSE-BOOK-HANDOFF.md.
@@ -190,20 +190,20 @@ Ordinary Duplicate/Export Trip/Import Trip copies are deliberately unlinked;
 whole-workspace backups retain their links. Requires Expense Book 3.32.47. Refresh the existing linked trip once to load
 business categories. Read EXPENSE-BOOK-HANDOFF.md before your first expense import.
 
-0.1.9 presentation refresh: Backup & Settings uses horizontal sections.
+Presentation: Backup & Settings uses horizontal sections.
 Optional Features contains Show Default Checklist and Departure Checklist.
 It starts off; saved checklist items are kept. Enable and Save Changes to restore it.
 Travel Defaults has separate tabs and preset / exact fuel price controls.
 
-0.1.9 fuel planning: Starting fuel price and Price allowance ± replace the
+Fuel planning: Starting fuel price and Price allowance ± replace the
 two duplicate price controls. New defaults use ±$0.10/gallon. Edit the allowance
 in Travel Defaults for future trips, or Travel & Lodging for an existing option.
 Older options keep a zero allowance until edited. Low/high cost combines the
 price range with MPG. Low price cannot fall below zero. Actual receipts and
 Expense Book transfers remain actual recorded amounts.
 
-UPDATING AN EXISTING INSTALLATION — 0.1.9
-Use the separate RoM-Update-v0.1.9.zip. Extract it and run Apply-Update.bat.
+UPDATING AN EXISTING INSTALLATION — 0.1.10
+Use the separate RoM-Update-v0.1.10.zip. Extract it and run Apply-Update.bat.
 Save/export a backup and Exit on ALL computers first. Choose your existing app
 folder containing Start-App.bat and Data. The installer verifies the app,
 backs up replaced program files and preserves Data. Keep the app closed until

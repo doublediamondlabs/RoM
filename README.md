@@ -11,7 +11,7 @@ Developed by **Double Diamond Labs — Adventure On!**
 Built through an iterative, AI-assisted development process and tested in our daily workflow.
 Automated checks support development; they are not a guarantee that every environment or scenario is covered.
 
-> Public preview v0.1.9 · MIT licensed · Windows launchers included.
+> Public preview v0.1.10 · MIT licensed · Windows launchers included.
 > See the release review for verification scope and remaining environment checks.
 
 ## What it does
@@ -40,8 +40,8 @@ The unsaved status is expected until **Save Changes** is selected.
 ## Download and start
 
 Open this repository's **Releases** section and
-choose `RoM-v0.1.9.zip`. GitHub's automatically generated “Source code” download is
-intended for development. Existing users should use `RoM-Update-v0.1.9.zip`.
+choose `RoM-v0.1.10.zip`. GitHub's automatically generated “Source code” download is
+intended for development. Existing users should use `RoM-Update-v0.1.10.zip`.
 
 1. Install Python 3.10 or newer on each Windows computer that will run RōM.
 2. Extract the complete application ZIP into a permanent folder.

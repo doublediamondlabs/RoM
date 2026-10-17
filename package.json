@@ -1,6 +1,6 @@
 {
   "name": "rom-travel-planner",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "private": true,
   "description": "Developer-only checks; application runtime uses Python standard library.",
   "scripts": {

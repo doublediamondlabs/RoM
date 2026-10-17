@@ -2,13 +2,14 @@
 
 const T = Travel,
   $ = s => document.querySelector(s),
-  esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({
-    '&': '&amp;',
-    '<': '&lt;',
-    '>': '&gt;',
-    '"': '&quot;',
-    "'": '&#39;'
-  })[c]);
+  // Encode plain text for HTML text and quoted attributes. Ampersands go first
+  // so existing entity-like text is preserved rather than interpreted.
+  esc = s => String(s ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
 const money = n => n === null || !Number.isFinite(n) ? '—' : new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
@@ -35,11 +36,11 @@ const titles = {
   defaults: 'Travel Defaults',
   settings: 'Backup & Settings'
 };
-const btn = (label, act, id = '', cls = '') => `<button class="${cls}" data-act="${act}" data-id="${esc(id)}">${esc(label)}</button>`;
+const btn = (label, act, id = '', cls = '') => `<button class="${esc(cls)}" data-act="${esc(act)}" data-id="${esc(id)}">${esc(label)}</button>`;
 const trip = () => state.trips.find(t => t.id === active),
   opt = () => trip()?.options.find(o => o.id === optionId) || trip()?.options[0];
 function field(k, label, value, type = 'text', choices = null, scope = 'job') {
-  return `<label>${esc(label)}${choices ? `<select data-scope="${scope}" data-key="${k}">${choices.map(x => `<option ${x === value ? 'selected' : ''}>${esc(x)}</option>`).join('')}</select>` : type === 'textarea' ? `<textarea data-scope="${scope}" data-key="${k}">${esc(value)}</textarea>` : `<input data-scope="${scope}" data-key="${k}" type="${type}" ${type === 'number' ? 'min="0" step="any"' : ''} value="${esc(value)}">`}</label>`;
+  return `<label>${esc(label)}${choices ? `<select data-scope="${esc(scope)}" data-key="${esc(k)}">${choices.map(x => `<option ${x === value ? 'selected' : ''}>${esc(x)}</option>`).join('')}</select>` : type === 'textarea' ? `<textarea data-scope="${esc(scope)}" data-key="${esc(k)}">${esc(value)}</textarea>` : `<input data-scope="${esc(scope)}" data-key="${esc(k)}" type="${esc(type)}" ${type === 'number' ? 'min="0" step="any"' : ''} value="${esc(value)}">`}</label>`;
 }
 let defaultsTab = 'van',
   settingsTab = 'backup';
@@ -54,7 +55,7 @@ const navButton = k => {
   if (!['trips', 'workspace', 'defaults', 'settings'].includes(k)) return '';
   return `<button data-act="nav" data-id="${esc(k)}" class="${page === k ? 'active' : ''}" ${page === k ? 'aria-current="page"' : ''}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">${icons[k]}</svg><span>${esc(titles[k])}</span></button>`;
 };
-const help = s => `<p class="help">${s}</p>`;
+const help = s => `<p class="help">${esc(s)}</p>`;
 const badge = s => `<span class="badge">${esc(s)}</span>`;
 function note(s, bad = false) {
   message = s;
@@ -137,7 +138,7 @@ function closeModal() {
   $('#dialog').innerHTML = '';
 }
 function shell() {
-  return `<div class="layout ${collapsed ? 'collapsed' : ''}"><aside><div class="brand"><img src="/travel-planner.svg" alt="RōM sunrise and road"><div>RōM<small>TRAVEL PLANNER</small></div></div><p class="credit">Developed by <strong>Double Diamond Labs</strong><span> - Adventure On!</span></p><div class="side-heading"><strong>WORKSPACE</strong><button data-act="collapse" aria-expanded="${!collapsed}" aria-label="${collapsed ? 'Expand' : 'Collapse'} sidebar">${collapsed ? '☰' : '‹'}</button></div><div class="side-content"><nav>${state.navigation.map(navButton).join('')}</nav>${btn('Arrange Menu', 'arrange')}<div class="side-bottom"><strong>Your trips. Your direction.</strong><p>Saved in your folder.<br>Ready for the road.</p><small>RōM · 0.1.9</small>${btn('Exit RōM', 'exit')}</div></div></aside><div class="workspace"><header><span id="save-status">${dirty ? 'Unsaved changes' : 'Saved workspace'}</span><div class="actions">${btn('Save Changes', 'save', '', 'primary')}${btn('Export Current Copy', 'backup')}${btn('Exit RōM', 'exit')}</div></header><main><div id="message" class="message ${error ? 'error' : ''}" ${message ? '' : 'hidden'}>${esc(message)}</div><div class="heading"><div><div class="eyebrow">A LITTLE DIRECTION FOR YOUR NEXT ADVENTURE</div><h1>${titles[page]}</h1></div>${page === 'workspace' && trip() ? btn('Print Departure Brief', 'brief') : ''}</div>${{
+  return `<div class="layout ${collapsed ? 'collapsed' : ''}"><aside><div class="brand"><img src="/travel-planner.svg" alt="RōM sunrise and road"><div>RōM<small>TRAVEL PLANNER</small></div></div><p class="credit">Developed by <strong>Double Diamond Labs</strong><span> - Adventure On!</span></p><div class="side-heading"><strong>WORKSPACE</strong><button data-act="collapse" aria-expanded="${!collapsed}" aria-label="${collapsed ? 'Expand' : 'Collapse'} sidebar">${collapsed ? '☰' : '‹'}</button></div><div class="side-content"><nav>${state.navigation.map(navButton).join('')}</nav>${btn('Arrange Menu', 'arrange')}<div class="side-bottom"><strong>Your trips. Your direction.</strong><p>Saved in your folder.<br>Ready for the road.</p><small>RōM · 0.1.10</small>${btn('Exit RōM', 'exit')}</div></div></aside><div class="workspace"><header><span id="save-status">${dirty ? 'Unsaved changes' : 'Saved workspace'}</span><div class="actions">${btn('Save Changes', 'save', '', 'primary')}${btn('Export Current Copy', 'backup')}${btn('Exit RōM', 'exit')}</div></header><main><div id="message" class="message ${error ? 'error' : ''}" ${message ? '' : 'hidden'}>${esc(message)}</div><div class="heading"><div><div class="eyebrow">A LITTLE DIRECTION FOR YOUR NEXT ADVENTURE</div><h1>${titles[page]}</h1></div>${page === 'workspace' && trip() ? btn('Print Departure Brief', 'brief') : ''}</div>${{
     trips: myTrips,
     workspace: workspace,
     defaults: defaults,
@@ -213,7 +214,7 @@ function options() {
 }
 function decision() {
   const t = trip();
-  return `<div class="grid"><label>Preferred option<select data-scope="decision" data-key="selected"><option value="">Not chosen</option>${t.options.map(o => `<option value="${o.id}" ${o.id === t.decision.selected ? 'selected' : ''}>${esc(o.name)}</option>`).join('')}</select></label>${field('status', 'Trip status', t.decision.status, 'text', ['Exploring', 'Tentatively selected', 'Ready to offer date', 'Booked', 'Completed', 'Declined', 'Cancelled'], 'decision')}${field('notes', 'Decision rationale / next steps / who is doing what', t.decision.notes, 'textarea', null, 'decision')}</div>${help('Choosing a preferred option does not book anything. Mark Booked only after making your arrangements externally.')}<div class="actions">${btn('Print Departure Brief', 'brief')}${btn('Duplicate This Trip', 'duplicate', t.id)}${btn(t.archived ? 'Restore to My Trips' : 'Archive Trip', 'archive', t.id)}</div>`;
+  return `<div class="grid"><label>Preferred option<select data-scope="decision" data-key="selected"><option value="">Not chosen</option>${t.options.map(o => `<option value="${esc(o.id)}" ${o.id === t.decision.selected ? 'selected' : ''}>${esc(o.name)}</option>`).join('')}</select></label>${field('status', 'Trip status', t.decision.status, 'text', ['Exploring', 'Tentatively selected', 'Ready to offer date', 'Booked', 'Completed', 'Declined', 'Cancelled'], 'decision')}${field('notes', 'Decision rationale / next steps / who is doing what', t.decision.notes, 'textarea', null, 'decision')}</div>${help('Choosing a preferred option does not book anything. Mark Booked only after making your arrangements externally.')}<div class="actions">${btn('Print Departure Brief', 'brief')}${btn('Duplicate This Trip', 'duplicate', t.id)}${btn(t.archived ? 'Restore to My Trips' : 'Archive Trip', 'archive', t.id)}</div>`;
 }
 function actualCosts() {
   const t = trip();
@@ -229,7 +230,7 @@ function actualResults(t, o) {
 }
 function pack() {
   const t = trip();
-  return `<div class="heading"><h2>Before you head out</h2>${btn('Print Departure Brief', 'brief')}</div>${help('Defaults supply the starting checklist. Add or remove items for this trip; your other trips keep their own lists.')}<div class="checklist">${t.checklist.map(c => `<div><label><input type="checkbox" data-check="${c.id}" ${c.done ? 'checked' : ''}>${esc(c.label)}</label>${btn('Remove', 'remove-check', c.id)}</div>`).join('')}</div><div class="actions"><input id="new-check" aria-label="New checklist item" maxlength="500" placeholder="Add a reminder for this trip">${btn('Add Item', 'add-check')}</div>`;
+  return `<div class="heading"><h2>Before you head out</h2>${btn('Print Departure Brief', 'brief')}</div>${help('Defaults supply the starting checklist. Add or remove items for this trip; your other trips keep their own lists.')}<div class="checklist">${t.checklist.map(c => `<div><label><input type="checkbox" data-check="${esc(c.id)}" ${c.done ? 'checked' : ''}>${esc(c.label)}</label>${btn('Remove', 'remove-check', c.id)}</div>`).join('')}</div><div class="actions"><input id="new-check" aria-label="New checklist item" maxlength="500" placeholder="Add a reminder for this trip">${btn('Add Item', 'add-check')}</div>`;
 }
 function fuelRange(d, scope) {
   const price = T.num(d.fuel),
@@ -276,7 +277,7 @@ function daily() {
   const t = trip(),
     days = T.sortedDays(t),
     d = currentDay();
-  return `<div class="heading"><h2>A little structure, room to wander</h2><div class="actions">${btn('Create Days from Trip Dates', 'build-days')}${btn('+ Add Day', 'add-day')}${btn('Copy Planning Prompt', 'prompt')}</div></div>${help('One daily plan belongs to the whole trip. Create Days uses your preferred option and adds only missing dates. Changing options or dates never overwrites your schedule. Edit the day headings and blocks as plans develop.')}<div id="daily-warning">${dailyWarning(t, preferred())}</div><div class="day-tabs">${days.map(x => `<button data-act="day" data-id="${x.id}" class="${d?.id === x.id ? 'active' : ''}"><strong>${esc(x.date || 'Unscheduled')}</strong><span>${esc(x.title || 'Untitled day')}</span></button>`).join('')}</div>${d ? `<div class="heading"><h3 id="daily-day-title">${esc(d.date || 'Unscheduled')} · ${esc(d.title || 'Daily plan')}</h3>${btn('Remove Day', 'remove-day', d.id)}</div><div class="grid">${field('date', 'Date', d.date, 'date', null, 'day')}${field('title', 'Day heading', d.title, 'text', null, 'day')}${field('morning', 'Morning', d.morning, 'textarea', null, 'day')}${field('afternoon', 'Afternoon', d.afternoon, 'textarea', null, 'day')}${field('evening', 'Evening', d.evening, 'textarea', null, 'day')}${field('notes', 'Notes / addresses / things to confirm', d.notes, 'textarea', null, 'day')}</div>` : '<div class="empty">Choose a preferred option, then create days from its dates—or add an undated day while you explore.</div>'}<details><summary>Ideas to consider / pasted AI suggestions</summary>${help('Paste useful suggestions here, then move the parts you choose into your daily blocks. This scratchpad is saved with the trip but is not included in the departure brief or copied prompt.')}${field('planningIdeas', 'Suggestions scratchpad', t.planningIdeas || '', 'textarea', null, 'trip')}</details>`;
+  return `<div class="heading"><h2>A little structure, room to wander</h2><div class="actions">${btn('Create Days from Trip Dates', 'build-days')}${btn('+ Add Day', 'add-day')}${btn('Copy Planning Prompt', 'prompt')}</div></div>${help('One daily plan belongs to the whole trip. Create Days uses your preferred option and adds only missing dates. Changing options or dates never overwrites your schedule. Edit the day headings and blocks as plans develop.')}<div id="daily-warning">${dailyWarning(t, preferred())}</div><div class="day-tabs">${days.map(x => `<button data-act="day" data-id="${esc(x.id)}" class="${d?.id === x.id ? 'active' : ''}"><strong>${esc(x.date || 'Unscheduled')}</strong><span>${esc(x.title || 'Untitled day')}</span></button>`).join('')}</div>${d ? `<div class="heading"><h3 id="daily-day-title">${esc(d.date || 'Unscheduled')} · ${esc(d.title || 'Daily plan')}</h3>${btn('Remove Day', 'remove-day', d.id)}</div><div class="grid">${field('date', 'Date', d.date, 'date', null, 'day')}${field('title', 'Day heading', d.title, 'text', null, 'day')}${field('morning', 'Morning', d.morning, 'textarea', null, 'day')}${field('afternoon', 'Afternoon', d.afternoon, 'textarea', null, 'day')}${field('evening', 'Evening', d.evening, 'textarea', null, 'day')}${field('notes', 'Notes / addresses / things to confirm', d.notes, 'textarea', null, 'day')}</div>` : '<div class="empty">Choose a preferred option, then create days from its dates—or add an undated day while you explore.</div>'}<details><summary>Ideas to consider / pasted AI suggestions</summary>${help('Paste useful suggestions here, then move the parts you choose into your daily blocks. This scratchpad is saved with the trip but is not included in the departure brief or copied prompt.')}${field('planningIdeas', 'Suggestions scratchpad', t.planningIdeas || '', 'textarea', null, 'trip')}</details>`;
 }
 function dailyBrief(t, o) {
   const days = T.sortedDays(t);
@@ -290,7 +291,7 @@ function dailyBrief(t, o) {
 }
 function promptDialog() {
   const t = trip();
-  modal(`<div class="heading"><h2>Copy Planning Prompt</h2>${btn('Close', 'close')}</div>${help('Review or edit the text below, then copy it into your preferred AI chat. Nothing is sent from RōM. Selecting another option regenerates this preview; your trip stays unchanged.')}<label>Use this travel option<select id="prompt-option"><option value="">Choose an option</option>${t.options.map(o => `<option value="${o.id}" ${o.id === t.decision.selected ? 'selected' : ''}>${esc(o.name)}${o.id === t.decision.selected ? ' — preferred' : ''}</option>`).join('')}</select></label><label>Planning prompt<textarea id="planning-prompt" rows="16" spellcheck="false"></textarea></label><p id="copy-status" class="help" role="status"></p><div class="actions">${btn('Copy to Clipboard', 'copy-prompt', '', 'primary')}${btn('Select All Text', 'select-prompt')}</div>${help('After reviewing the AI response, paste useful suggestions into Daily Plan → Ideas to consider, or enter them directly into the day blocks. Customer/trip name, contact details, booking confirmations, and the suggestions scratchpad are not automatically added to this prompt.')}`);
+  modal(`<div class="heading"><h2>Copy Planning Prompt</h2>${btn('Close', 'close')}</div>${help('Review or edit the text below, then copy it into your preferred AI chat. Nothing is sent from RōM. Selecting another option regenerates this preview; your trip stays unchanged.')}<label>Use this travel option<select id="prompt-option"><option value="">Choose an option</option>${t.options.map(o => `<option value="${esc(o.id)}" ${o.id === t.decision.selected ? 'selected' : ''}>${esc(o.name)}${o.id === t.decision.selected ? ' — preferred' : ''}</option>`).join('')}</select></label><label>Planning prompt<textarea id="planning-prompt" rows="16" spellcheck="false"></textarea></label><p id="copy-status" class="help" role="status"></p><div class="actions">${btn('Copy to Clipboard', 'copy-prompt', '', 'primary')}${btn('Select All Text', 'select-prompt')}</div>${help('After reviewing the AI response, paste useful suggestions into Daily Plan → Ideas to consider, or enter them directly into the day blocks. Customer/trip name, contact details, booking confirmations, and the suggestions scratchpad are not automatically added to this prompt.')}`);
   updatePrompt();
 }
 function updatePrompt() {
@@ -534,7 +535,7 @@ document.addEventListener('input', e => {
     dayId = obj.id;
     if ($('#daily-day-title')) $('#daily-day-title').textContent = (obj.date || 'Unscheduled') + ' · ' + (obj.title || 'Daily plan');
     if ($('#daily-warning')) $('#daily-warning').innerHTML = dailyWarning(trip(), preferred());
-    const b = $(`[data-act="day"][data-id="${obj.id}"]`);
+    const b = [...document.querySelectorAll('[data-act="day"]')].find(el => el.dataset.id === obj.id);
     if (b) {
       b.querySelector('strong').textContent = obj.date || 'Unscheduled';
       b.querySelector('span').textContent = obj.title || 'Untitled day';

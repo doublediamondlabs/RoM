@@ -1,18 +1,21 @@
-# RōM v0.1.9 — public preview
+# RōM v0.1.10 — public preview
 
-Adds display-layer validation and HTML escaping for restored navigation values
-and imported inspection mileage. Includes readable JavaScript formatting for
-CodeQL analysis. Existing import validation remains in place.
+Further hardens imported data display following the remaining CodeQL findings
+in v0.1.9. Plain text uses explicit HTML character encoding; imported option,
+checklist and daily-plan IDs are escaped in quoted attributes. Help text is
+encoded as plain text. Day lookup no longer builds a selector from a record ID.
+The navigation allowlist and inspection mileage escaping from v0.1.9 remain.
 
-No trip-data schema or intended planning behavior changes. Existing trips and
-settings are preserved by the updater. Close every RōM session before updating.
+No trip-data schema changes. Existing trips and settings are preserved by the
+updater. Close every RōM session before updating.
 
-Downloads: RoM-v0.1.9.zip for a fresh installation;
-RoM-Update-v0.1.9.zip for an existing installation.
+Downloads: RoM-v0.1.10.zip for a fresh installation;
+RoM-Update-v0.1.10.zip for an existing installation.
 Python 3.10 or newer is required; no Python packages are needed.
 
-Automated verification includes navigation and inspection rendering regression
-checks plus the existing release suite. GitHub CodeQL confirmation for these
-changes remains pending until the source is pushed and scanned.
+Automated verification covers repeated special characters, literal entity text,
+malformed imported IDs, inspection preview and the existing release suite.
+GitHub CodeQL confirmation remains pending until this source is pushed and
+scanned. Passing local tests is not a claim that all security issues are absent.
 
 MIT licensed. Experimental personal project; maintained as time permits.

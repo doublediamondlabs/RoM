@@ -14,8 +14,8 @@ Update the source and download assets together before publishing the preview.
 1. Put the approved source into your local repository clone, retaining its .git folder.
 2. Review changes in GitHub Desktop; exclude Data, backups, exports, dependencies and dist.
 3. Commit and push. Review the first commit and its author email before pushing.
-4. On GitHub choose Releases → Draft a new release. Create tag v0.1.9 on that commit.
-5. Title: RōM v0.1.9 — first public preview. Paste RELEASE-NOTES.md and mark as prerelease.
+4. On GitHub choose Releases → Draft a new release. Create tag v0.1.10 on that commit.
+5. Title: RōM v0.1.10 — public preview. Paste RELEASE-NOTES.md and mark as prerelease.
 6. Attach the checked app and Update ZIPs plus SHA256SUMS.txt. The repository ZIP is
    optional; the committed source is already available. Save as draft for final review.
 7. Confirm the release assets match the final source commit, then publish as a pre-release.
