@@ -1,4 +1,79 @@
-const assert=require('node:assert/strict'),T=require('../app/web/domain.js'),p={...require('./inspection-transfer.json'),version:2,expenseCatalog:[{year:2026,categories:[{name:'Fuel',subs:['Van']},{name:'Food',subs:[]},{name:'Lodging',subs:[]}]}]};
-const state={app:'double-diamond-travel',version:1,trips:[],defaults:{hotelMpgLow:24,hotelMpgHigh:27,rvMpgLow:9,rvMpgHigh:10,fuel:'',preferences:'',checklist:''},navigation:['trips','workspace','defaults','settings']};
-const r=T.importInspection(state,p),t=r.next.trips[0];t.options[0].actualFuel='99';const x={...T.expense(t),payee:'Example',description:'Fuel receipt',amount:'50.25',category:'Fuel',subCategory:'Van',bucket:'Fuel'};t.tripExpenses=[x];assert.equal(T.expenseProblem(t,x),'');assert.equal(T.expenseTotals(t).total,50.25);assert.equal(T.expenseTotals(t).complete,false);t.expensesComplete=true;assert.equal(T.expenseTotals(t).complete,true);assert.equal(T.tripResults(t,false,false,[x.id]).expenses[0].amount,50.25);assert.equal(T.tripResults(t,false,false,[x.id]).version,2);assert.throws(()=>T.tripResults(t,false,false,[]),/Choose/);assert.match(T.expenseProblem(t,{...x,amount:'1.001'}),/two decimal/);assert.match(T.expenseProblem(t,{...x,date:'2027-01-01'}),/category/);assert.match(T.expenseProblem(t,{...x,subCategory:'Gone'}),/subcategory/);assert.equal(T.duplicate(t).tripExpenses,undefined);const fresh={...p,generation:'refresh',exportedAt:'2026-10-20T00:00:00.000Z'};assert.equal(T.importInspection(r.next,fresh).next.trips[0].tripExpenses[0].id,x.id);assert.equal(T.importTrip({...t,version:1}).tripExpenses[0].amount,'50.25');
-if(process.argv.includes('--fixture'))console.log(JSON.stringify(r.next));else console.log('PASS v2 categories, itemized-only totals, selected receipts, valid dates/amounts, preserved refresh, legacy totals excluded and duplicate-trip receipt reset.');
+const assert = require('node:assert/strict'),
+  T = require('../app/web/domain.js'),
+  p = {
+    ...require('./inspection-transfer.json'),
+    version: 2,
+    expenseCatalog: [{
+      year: 2026,
+      categories: [{
+        name: 'Fuel',
+        subs: ['Van']
+      }, {
+        name: 'Food',
+        subs: []
+      }, {
+        name: 'Lodging',
+        subs: []
+      }]
+    }]
+  };
+const state = {
+  app: 'double-diamond-travel',
+  version: 1,
+  trips: [],
+  defaults: {
+    hotelMpgLow: 24,
+    hotelMpgHigh: 27,
+    rvMpgLow: 9,
+    rvMpgHigh: 10,
+    fuel: '',
+    preferences: '',
+    checklist: ''
+  },
+  navigation: ['trips', 'workspace', 'defaults', 'settings']
+};
+const r = T.importInspection(state, p),
+  t = r.next.trips[0];
+t.options[0].actualFuel = '99';
+const x = {
+  ...T.expense(t),
+  payee: 'Example',
+  description: 'Fuel receipt',
+  amount: '50.25',
+  category: 'Fuel',
+  subCategory: 'Van',
+  bucket: 'Fuel'
+};
+t.tripExpenses = [x];
+assert.equal(T.expenseProblem(t, x), '');
+assert.equal(T.expenseTotals(t).total, 50.25);
+assert.equal(T.expenseTotals(t).complete, false);
+t.expensesComplete = true;
+assert.equal(T.expenseTotals(t).complete, true);
+assert.equal(T.tripResults(t, false, false, [x.id]).expenses[0].amount, 50.25);
+assert.equal(T.tripResults(t, false, false, [x.id]).version, 2);
+assert.throws(() => T.tripResults(t, false, false, []), /Choose/);
+assert.match(T.expenseProblem(t, {
+  ...x,
+  amount: '1.001'
+}), /two decimal/);
+assert.match(T.expenseProblem(t, {
+  ...x,
+  date: '2027-01-01'
+}), /category/);
+assert.match(T.expenseProblem(t, {
+  ...x,
+  subCategory: 'Gone'
+}), /subcategory/);
+assert.equal(T.duplicate(t).tripExpenses, undefined);
+const fresh = {
+  ...p,
+  generation: 'refresh',
+  exportedAt: '2026-10-20T00:00:00.000Z'
+};
+assert.equal(T.importInspection(r.next, fresh).next.trips[0].tripExpenses[0].id, x.id);
+assert.equal(T.importTrip({
+  ...t,
+  version: 1
+}).tripExpenses[0].amount, '50.25');
+if (process.argv.includes('--fixture')) console.log(JSON.stringify(r.next));else console.log('PASS v2 categories, itemized-only totals, selected receipts, valid dates/amounts, preserved refresh, legacy totals excluded and duplicate-trip receipt reset.');

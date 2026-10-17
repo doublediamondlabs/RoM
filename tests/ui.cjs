@@ -1,9 +1,240 @@
-const {JSDOM}=require(process.env.PLANNER_JSDOM||'jsdom');const fs=require('fs'),path=require('path'),assert=require('node:assert/strict');const dir=path.join(__dirname,'../app/web');
-const initial={app:'double-diamond-travel',version:1,trips:[],defaults:{hotelMpgLow:24,hotelMpgHigh:27,rvMpgLow:9,rvMpgHigh:10,fuel:'',preferences:'Dog-friendly',checklist:'Keys\nClipboard'},navigation:['trips','workspace','defaults','settings']};
-let saved=structuredClone(initial),saves=0,conflict=false,prints=0,clipboardText='';
-const dom=new JSDOM('<div id="app"></div><dialog id="dialog"></dialog>',{url:'http://localhost',runScripts:'outside-only'}),w=dom.window;
-Object.defineProperty(w.navigator,'clipboard',{value:{writeText:async text=>{clipboardText=text}},configurable:true});w.structuredClone=structuredClone;w.confirm=()=>true;w.HTMLDialogElement.prototype.showModal=function(){this.open=true};w.HTMLDialogElement.prototype.close=function(){this.open=false};w.print=()=>prints++;
-w.fetch=async(url,opts)=>{let j;if(url==='/api/state')j={state:structuredClone(saved),revision:'rev',token:'token'};else if(url==='/api/save'){if(conflict)return {ok:false,json:async()=>({error:'Changes were saved in another window.'})};saves++;saved=JSON.parse(opts.body).state;j={revision:'rev'+saves}}else j={ok:true};return {ok:true,json:async()=>j}};
-w.eval(fs.readFileSync(path.join(dir,'domain.js'),'utf8'));w.eval(fs.readFileSync(path.join(dir,'app.js'),'utf8'));
-const tick=()=>new Promise(r=>setTimeout(r,0)),q=s=>w.document.querySelector(s),click=(act,id)=>{const el=q(`[data-act="${act}"]${id!==undefined?`[data-id="${id}"]`:''}`);assert.ok(el,act+' '+id);el.click()},input=(scope,key,value)=>{const e=q(`[data-scope="${scope}"][data-key="${key}"]`);assert.ok(e,key);e.value=value;e.dispatchEvent(new w.Event('input',{bubbles:true}))};
-(async()=>{await tick();assert.match(q('.credit').textContent,/Developed by Double Diamond Labs - Adventure On!/);click('new','Personal');assert.ok(q('[data-key="budget"]'));assert.equal(q('[data-key="quote"]'),null);input('job','name','Weekend with family');input('job','budget','1000');click('tab','options');for(const [k,v]of Object.entries({start:'2026-11-06',end:'2026-11-08',miles:'400',fuel:'3.5',total:'200'}))input('option',k,v);assert.doesNotMatch(q('#live-results').textContent,/Incomplete estimate/);click('tab','compare');click('choose');click('tab','daily');click('build-days');assert.equal(w.document.querySelectorAll('[data-act="day"]').length,3);input('day','morning','Drive to the campground');input('trip','planningIdeas','Keep this idea for later');click('build-days');assert.equal(w.document.querySelectorAll('[data-act="day"]').length,3);assert.equal(q('[data-key="morning"]').value,'Drive to the campground');click('prompt');assert.match(q('#planning-prompt').value,/Drive to the campground/);assert.match(q('#planning-prompt').value,/Optional total travel budget: \$1000.00/);assert.ok(!q('#planning-prompt').value.includes('Keep this idea for later'));click('copy-prompt');await tick();assert.match(clipboardText,/Drive to the campground/);w.navigator.clipboard.writeText=async()=>{throw Error('denied')};click('copy-prompt');await tick();assert.match(q('#copy-status').textContent,/Ctrl\+C/);click('close');assert.equal(q('[data-act="tab"][data-id="pack"]'),null);click('nav','settings');click('settings-tab','display');const enabled=q('#checklist-enabled');assert.equal(enabled.checked,false);enabled.checked=true;enabled.dispatchEvent(new w.Event('input',{bubbles:true}));click('nav','workspace');click('tab','pack');assert.equal(w.document.querySelectorAll('[data-check]').length,2);const check=q('[data-check]');check.checked=true;check.dispatchEvent(new w.Event('input',{bubbles:true}));click('brief');assert.ok(q('dialog').open);assert.match(q('dialog').textContent,/Weekend with family/);assert.match(q('dialog').textContent,/Drive to the campground/);assert.ok(!q('dialog').textContent.includes('Keep this idea for later'));assert.doesNotMatch(q('dialog').textContent,/Inspection date/);click('print');assert.equal(prints,1);click('close');click('save');await tick();assert.equal(saves,1);assert.equal(saved.trips[0].job.name,'Weekend with family');assert.equal(saved.trips[0].checklist[0].done,true);assert.equal(saved.trips[0].type,'Personal');assert.equal(saved.trips[0].dailyPlan.length,3);assert.equal(saved.trips[0].planningIdeas,'Keep this idea for later');click('tab','actual');for(const [k,v]of Object.entries({actualFuel:'80',actualLodging:'200',actualMeals:'30',actualOther:'0'}))input('option',k,v);assert.match(q('#actual-results').textContent,/\$310.00/);click('save');await tick();click('nav','trips');click('duplicate');assert.match(q('[data-key="name"]').value,/copy/);click('tab','actual');assert.equal(q('[data-key="actualFuel"]').value,'');click('nav','trips');click('new','Inspection');assert.ok(q('[data-key="quote"]'));click('tab','options');assert.match(q('#live-results').textContent,/Inspection date/);click('nav','defaults');click('defaults-tab','preferences');input('defaults','preferences','New preference');click('nav','trips');click('new','Personal');assert.equal(q('[data-key="preferences"]').value,'New preference');conflict=true;click('save');await tick();assert.match(q('#message').textContent,/another window/);assert.equal(q('#save-status').textContent,'Unsaved changes');click('collapse');assert.ok(q('.layout.collapsed'));click('collapse');click('arrange');click('move-menu','trips|1');assert.equal(q('dialog .heading span').textContent,'Trip Workspace');click('close');assert.equal(saves,2);click('nav','defaults');click('defaults-tab','fuel');input('defaults','fuel','3.50');assert.match(q('#fuel-range').textContent,/3.40.*3.60/);input('defaults','fuelAllowance','0.20');assert.match(q('#fuel-range').textContent,/3.30.*3.70/);assert.equal(q('[data-key="fuel"]').value,'3.50');input('defaults','fuel','3.579');click('defaults-tab','van');click('defaults-tab','fuel');assert.equal(q('[data-key="fuel"]').value,'3.579');assert.equal(w.document.querySelectorAll('nav svg').length,4);click('nav','settings');click('settings-tab','display');const off=q('#checklist-enabled');off.checked=false;off.dispatchEvent(new w.Event('input',{bubbles:true}));click('nav','workspace');assert.equal(q('[data-act="tab"][data-id="pack"]'),null);click('nav','trips');const original=saved.trips[0].id;click('open',original);click('brief');assert.doesNotMatch(q('dialog').textContent,/Pack & confirm/);click('close');console.log('UI checks passed: tabs, personal/inspection fields, calculations, checklist, print, actuals, duplicate, defaults, saved state, conflict recovery, sidebar.');w.close()})().catch(e=>{console.error(e);process.exitCode=1;w.close()});
+const {
+  JSDOM
+} = require(process.env.PLANNER_JSDOM || 'jsdom');
+const fs = require('fs'),
+  path = require('path'),
+  assert = require('node:assert/strict');
+const dir = path.join(__dirname, '../app/web');
+const initial = {
+  app: 'double-diamond-travel',
+  version: 1,
+  trips: [],
+  defaults: {
+    hotelMpgLow: 24,
+    hotelMpgHigh: 27,
+    rvMpgLow: 9,
+    rvMpgHigh: 10,
+    fuel: '',
+    preferences: 'Dog-friendly',
+    checklist: 'Keys\nClipboard'
+  },
+  navigation: ['trips', 'workspace', 'defaults', 'settings']
+};
+let saved = structuredClone(initial),
+  saves = 0,
+  conflict = false,
+  prints = 0,
+  clipboardText = '';
+const dom = new JSDOM('<div id="app"></div><dialog id="dialog"></dialog>', {
+    url: 'http://localhost',
+    runScripts: 'outside-only'
+  }),
+  w = dom.window;
+Object.defineProperty(w.navigator, 'clipboard', {
+  value: {
+    writeText: async text => {
+      clipboardText = text;
+    }
+  },
+  configurable: true
+});
+w.structuredClone = structuredClone;
+w.confirm = () => true;
+w.HTMLDialogElement.prototype.showModal = function () {
+  this.open = true;
+};
+w.HTMLDialogElement.prototype.close = function () {
+  this.open = false;
+};
+w.print = () => prints++;
+w.fetch = async (url, opts) => {
+  let j;
+  if (url === '/api/state') j = {
+    state: structuredClone(saved),
+    revision: 'rev',
+    token: 'token'
+  };else if (url === '/api/save') {
+    if (conflict) return {
+      ok: false,
+      json: async () => ({
+        error: 'Changes were saved in another window.'
+      })
+    };
+    saves++;
+    saved = JSON.parse(opts.body).state;
+    j = {
+      revision: 'rev' + saves
+    };
+  } else j = {
+    ok: true
+  };
+  return {
+    ok: true,
+    json: async () => j
+  };
+};
+w.eval(fs.readFileSync(path.join(dir, 'domain.js'), 'utf8'));
+w.eval(fs.readFileSync(path.join(dir, 'app.js'), 'utf8'));
+const tick = () => new Promise(r => setTimeout(r, 0)),
+  q = s => w.document.querySelector(s),
+  click = (act, id) => {
+    const el = q(`[data-act="${act}"]${id !== undefined ? `[data-id="${id}"]` : ''}`);
+    assert.ok(el, act + ' ' + id);
+    el.click();
+  },
+  input = (scope, key, value) => {
+    const e = q(`[data-scope="${scope}"][data-key="${key}"]`);
+    assert.ok(e, key);
+    e.value = value;
+    e.dispatchEvent(new w.Event('input', {
+      bubbles: true
+    }));
+  };
+(async () => {
+  await tick();
+  assert.match(q('.credit').textContent, /Developed by Double Diamond Labs - Adventure On!/);
+  click('new', 'Personal');
+  assert.ok(q('[data-key="budget"]'));
+  assert.equal(q('[data-key="quote"]'), null);
+  input('job', 'name', 'Weekend with family');
+  input('job', 'budget', '1000');
+  click('tab', 'options');
+  for (const [k, v] of Object.entries({
+    start: '2026-11-06',
+    end: '2026-11-08',
+    miles: '400',
+    fuel: '3.5',
+    total: '200'
+  })) input('option', k, v);
+  assert.doesNotMatch(q('#live-results').textContent, /Incomplete estimate/);
+  click('tab', 'compare');
+  click('choose');
+  click('tab', 'daily');
+  click('build-days');
+  assert.equal(w.document.querySelectorAll('[data-act="day"]').length, 3);
+  input('day', 'morning', 'Drive to the campground');
+  input('trip', 'planningIdeas', 'Keep this idea for later');
+  click('build-days');
+  assert.equal(w.document.querySelectorAll('[data-act="day"]').length, 3);
+  assert.equal(q('[data-key="morning"]').value, 'Drive to the campground');
+  click('prompt');
+  assert.match(q('#planning-prompt').value, /Drive to the campground/);
+  assert.match(q('#planning-prompt').value, /Optional total travel budget: \$1000.00/);
+  assert.ok(!q('#planning-prompt').value.includes('Keep this idea for later'));
+  click('copy-prompt');
+  await tick();
+  assert.match(clipboardText, /Drive to the campground/);
+  w.navigator.clipboard.writeText = async () => {
+    throw Error('denied');
+  };
+  click('copy-prompt');
+  await tick();
+  assert.match(q('#copy-status').textContent, /Ctrl\+C/);
+  click('close');
+  assert.equal(q('[data-act="tab"][data-id="pack"]'), null);
+  click('nav', 'settings');
+  click('settings-tab', 'display');
+  const enabled = q('#checklist-enabled');
+  assert.equal(enabled.checked, false);
+  enabled.checked = true;
+  enabled.dispatchEvent(new w.Event('input', {
+    bubbles: true
+  }));
+  click('nav', 'workspace');
+  click('tab', 'pack');
+  assert.equal(w.document.querySelectorAll('[data-check]').length, 2);
+  const check = q('[data-check]');
+  check.checked = true;
+  check.dispatchEvent(new w.Event('input', {
+    bubbles: true
+  }));
+  click('brief');
+  assert.ok(q('dialog').open);
+  assert.match(q('dialog').textContent, /Weekend with family/);
+  assert.match(q('dialog').textContent, /Drive to the campground/);
+  assert.ok(!q('dialog').textContent.includes('Keep this idea for later'));
+  assert.doesNotMatch(q('dialog').textContent, /Inspection date/);
+  click('print');
+  assert.equal(prints, 1);
+  click('close');
+  click('save');
+  await tick();
+  assert.equal(saves, 1);
+  assert.equal(saved.trips[0].job.name, 'Weekend with family');
+  assert.equal(saved.trips[0].checklist[0].done, true);
+  assert.equal(saved.trips[0].type, 'Personal');
+  assert.equal(saved.trips[0].dailyPlan.length, 3);
+  assert.equal(saved.trips[0].planningIdeas, 'Keep this idea for later');
+  click('tab', 'actual');
+  for (const [k, v] of Object.entries({
+    actualFuel: '80',
+    actualLodging: '200',
+    actualMeals: '30',
+    actualOther: '0'
+  })) input('option', k, v);
+  assert.match(q('#actual-results').textContent, /\$310.00/);
+  click('save');
+  await tick();
+  click('nav', 'trips');
+  click('duplicate');
+  assert.match(q('[data-key="name"]').value, /copy/);
+  click('tab', 'actual');
+  assert.equal(q('[data-key="actualFuel"]').value, '');
+  click('nav', 'trips');
+  click('new', 'Inspection');
+  assert.ok(q('[data-key="quote"]'));
+  click('tab', 'options');
+  assert.match(q('#live-results').textContent, /Inspection date/);
+  click('nav', 'defaults');
+  click('defaults-tab', 'preferences');
+  input('defaults', 'preferences', 'New preference');
+  click('nav', 'trips');
+  click('new', 'Personal');
+  assert.equal(q('[data-key="preferences"]').value, 'New preference');
+  conflict = true;
+  click('save');
+  await tick();
+  assert.match(q('#message').textContent, /another window/);
+  assert.equal(q('#save-status').textContent, 'Unsaved changes');
+  click('collapse');
+  assert.ok(q('.layout.collapsed'));
+  click('collapse');
+  click('arrange');
+  click('move-menu', 'trips|1');
+  assert.equal(q('dialog .heading span').textContent, 'Trip Workspace');
+  click('close');
+  assert.equal(saves, 2);
+  click('nav', 'defaults');
+  click('defaults-tab', 'fuel');
+  input('defaults', 'fuel', '3.50');
+  assert.match(q('#fuel-range').textContent, /3.40.*3.60/);
+  input('defaults', 'fuelAllowance', '0.20');
+  assert.match(q('#fuel-range').textContent, /3.30.*3.70/);
+  assert.equal(q('[data-key="fuel"]').value, '3.50');
+  input('defaults', 'fuel', '3.579');
+  click('defaults-tab', 'van');
+  click('defaults-tab', 'fuel');
+  assert.equal(q('[data-key="fuel"]').value, '3.579');
+  assert.equal(w.document.querySelectorAll('nav svg').length, 4);
+  click('nav', 'settings');
+  click('settings-tab', 'display');
+  const off = q('#checklist-enabled');
+  off.checked = false;
+  off.dispatchEvent(new w.Event('input', {
+    bubbles: true
+  }));
+  click('nav', 'workspace');
+  assert.equal(q('[data-act="tab"][data-id="pack"]'), null);
+  click('nav', 'trips');
+  const original = saved.trips[0].id;
+  click('open', original);
+  click('brief');
+  assert.doesNotMatch(q('dialog').textContent, /Pack & confirm/);
+  click('close');
+  console.log('UI checks passed: tabs, personal/inspection fields, calculations, checklist, print, actuals, duplicate, defaults, saved state, conflict recovery, sidebar.');
+  w.close();
+})().catch(e => {
+  console.error(e);
+  process.exitCode = 1;
+  w.close();
+});
