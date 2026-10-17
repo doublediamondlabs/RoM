@@ -1,19 +1,18 @@
-# RōM v0.1.8 — public preview
+# RōM v0.1.9 — public preview
 
-Offline personal and inspection travel planning with fuel-cost ranges, hotel/RV
-comparisons, daily plans, printable briefs, optional checklists and copyable AI prompts.
-Expense Book file exchange is optional; no other Double Diamond application is required.
+Adds display-layer validation and HTML escaping for restored navigation values
+and imported inspection mileage. Includes readable JavaScript formatting for
+CodeQL analysis. Existing import validation remains in place.
 
-This release adds public-facing documentation, fictional sample data and a pinned
-developer-test dependency record. It does not introduce a trip-data schema change.
+No trip-data schema or intended planning behavior changes. Existing trips and
+settings are preserved by the updater. Close every RōM session before updating.
 
-Downloads: RoM-v0.1.8.zip for a fresh installation; RoM-Update-v0.1.8.zip for an
-existing installation. Back up first and close every RōM session before updating.
-See START-HERE.txt. No Python packages or online account are required to run the app.
+Downloads: RoM-v0.1.9.zip for a fresh installation;
+RoM-Update-v0.1.9.zip for an existing installation.
+Python 3.10 or newer is required; no Python packages are needed.
 
-Experimental personal project. Support and updates are provided as time permits.
-Licensed under MIT. Fictional demo data and screenshots are included.
+Automated verification includes navigation and inspection rendering regression
+checks plus the existing release suite. GitHub CodeQL confirmation for these
+changes remains pending until the source is pushed and scanned.
 
-Automated tests passed. The owner confirmed Windows launch, demo import and
-save/reopen persistence. Fresh online developer dependency installation and a
-full native print/shortcut/backup/update pilot remain unverified for this package.
+MIT licensed. Experimental personal project; maintained as time permits.

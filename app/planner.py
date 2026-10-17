@@ -1,4 +1,4 @@
-"""RoM 0.1.8 — offline, standard-library runtime."""
+"""RoM 0.1.9 — offline, standard-library runtime."""
 import datetime as dt,hashlib,json,os,secrets,sys,tempfile,threading,webbrowser
 from pathlib import Path
 from http.server import BaseHTTPRequestHandler,ThreadingHTTPServer
@@ -75,7 +75,7 @@ def serve():
  DATA.mkdir(parents=True,exist_ok=True)
  server=ThreadingHTTPServer(('127.0.0.1',0),Handler)
  url=f'http://127.0.0.1:{server.server_port}'
- print('RoM 0.1.8\n'+url+'\nKeep this diagnostics window open while using the planner.')
+ print('RoM 0.1.9\n'+url+'\nKeep this diagnostics window open while using the planner.')
  webbrowser.open(url);server.serve_forever();server.server_close()
 def main():
  from update_guard import session
