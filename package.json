@@ -1,0 +1,16 @@
+{
+  "name": "rom-travel-planner",
+  "version": "0.1.8",
+  "private": true,
+  "description": "Developer-only checks; application runtime uses Python standard library.",
+  "scripts": {
+    "test": "node tests/domain.cjs && node tests/ui.cjs"
+  },
+  "devDependencies": {
+    "jsdom": "30.1.2"
+  },
+  "engines": {
+    "node": "^22.22.2 || ^24.15.0 || >=26.0.0"
+  },
+  "license": "MIT"
+}

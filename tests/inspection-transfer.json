@@ -1,0 +1,23 @@
+{
+  "format": "double-diamond-inspection-trip",
+  "version": 1,
+  "linkId": "test-link",
+  "generation": "generation-1",
+  "jobId": "2026|job-1",
+  "visitId": "visit-1",
+  "exportedAt": "2026-10-17T00:00:00.000Z",
+  "inspection": {
+    "name": "Synthetic Customer",
+    "date": "2026-11-05",
+    "outcome": "Scheduled",
+    "purpose": "Initial inspection",
+    "vehicle": "Van",
+    "miles": null,
+    "rv": "2024 Example Trailer",
+    "vin": "001234",
+    "contacts": "Synthetic Customer\nPhone: 555-0100",
+    "destination": "1 Example Road, Anna, IL, 01234",
+    "quote": 1200,
+    "notes": "Call before arrival"
+  }
+}

@@ -1,0 +1,16 @@
+# RōM v0.1.8 — public release candidate
+Data/
+**/Data/
+node_modules/
+__pycache__/
+*.pyc
+dist/
+startup-error.txt
+*.log
+
+# Exported personal work and local review material
+*.bundle
+*.log
+startup-error.txt
+App-Update-Backups/
+**/App-Update-Backups/

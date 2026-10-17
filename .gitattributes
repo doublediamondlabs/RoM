@@ -1,0 +1,10 @@
+# RōM v0.1.8 — public release candidate
+* text=auto
+*.bat text eol=crlf
+*.ps1 text eol=crlf
+*.py text eol=lf
+*.js text eol=lf
+*.cjs text eol=lf
+*.html text eol=lf
+*.css text eol=lf
+*.ico binary

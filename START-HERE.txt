@@ -1,0 +1,214 @@
+PUBLIC PREVIEW CANDIDATE — REVIEW ONLY; DO NOT PUBLISH YET
+RōM — v0.1.8
+Developed by Double Diamond Labs - Adventure On!
+
+This complete release adds compact Settings and Travel Defaults tabs, sidebar
+icons, help styling, fuel-price choices and an optional checklist toggle.
+The offline Expense Book handoff and itemized expenses remain included.
+Daily Plan, Copy Planning Prompt, and the sunrise-road icon are included.
+Install this package directly; the earlier v0.1.0/v0.1.1/v0.1.2/v0.1.3 packages are not required.
+Application and shortcut: RōM (pronounced roam). Package/folder names: RoM.
+
+FIRST INSTALL — KEEP THIS SEPARATE FROM EXPENSE BOOK AND SEO GENIE
+1. Extract the entire application ZIP.
+2. Move the extracted application folder to its permanent location on your
+   computer or network share. Do not run it from inside the ZIP or Downloads
+   if you intend to move it afterward.
+3. Python 3.10 or newer is required on EACH computer. Use your existing Python
+   installation if Expense Book or SEO Genie already runs on that computer.
+4. Inside the permanent folder, run Install-Desktop-Shortcut.bat.
+   Run this once on each computer. The icon and a small startup helper are
+   copied to that computer's local application-data folder. Your trips remain
+   in the shared application folder.
+5. Open RōM using its desktop shortcut. You can also run
+   Start-App.bat. Use Start-App-Diagnostics.bat if startup needs investigation.
+6. Confirm v0.1.8 at the bottom of the sidebar. Start with Travel Defaults,
+   save your preferences, then create a Personal or Inspection trip. Expense Book
+   file exchange is optional; see EXPENSE-BOOK-HANDOFF.md if you use it.
+
+YOUR WORK IS SAVED WHEN YOU CLICK SAVE CHANGES
+Edits stay on screen while you move between pages. The header shows Unsaved
+changes until Save Changes succeeds. Closing the browser is not a save.
+Export Current Copy downloads everything currently on screen, even if the
+last save failed. Use it before reloading if you need to preserve unsaved work.
+
+THE COMPACT WORKSPACE
+My Trips: separate saved trips, filtered by Inspection, Personal, or Archived.
+Trip Workspace: Overview / Compare Options / Travel & Lodging / Decision &
+Notes / Daily Plan / Actual Costs / Departure Checklist / Expense Book Handoff. Options have their own horizontal
+buttons. Long notes and booking details start collapsed.
+Travel Defaults: MPG ranges, initial fuel price, preferences, and checklist.
+Backup & Settings: collapsed cards for backups, importing trips, and help.
+Arrange Menu: move sidebar headings up/down; Save Changes keeps the order.
+
+BRING YOUR OLD HTML TRIP OVER
+1. Open your old HTML planner in the browser where you used it.
+2. Choose Export trip file, which downloads JSON.
+3. In the new app: Backup & Settings > Import an Existing Trip > Import Trip JSON.
+4. Review the imported values, selected option, notes, and dates. Save Changes.
+This ADDS a trip. It does not replace your existing trips. The original HTML
+file remains usable. Browser local storage cannot be read automatically by
+this application. If you have a portable HTML copy, open it and export JSON.
+No real customer trip or Erin example is preloaded in the new application.
+The new app uses trip JSON, full-workspace JSON backups, and printable briefs;
+it does not generate another self-contained HTML application per trip.
+
+PLAN AN INSPECTION OR PERSONAL TRIP
+Inspection trips retain quoted fee, normal fee, travel contribution context,
+and inspection date. Personal trips instead offer an OPTIONAL travel budget.
+Switching trip type retains any hidden values so switching back is possible.
+Each option is a whole trip scenario, not a leg of a multi-stop itinerary.
+Add different lodging, dates, or van/RV options and compare them side by side.
+Choose Preferred to identify the option used on the trip card and printed brief.
+Choosing an option does not book it. Set Booked after arranging it externally.
+Dates and rates are manual. No maps, live quotes, bookings, or messages are sent.
+
+COST RULES
+Fuel range = total trip miles / MPG range * fuel price.
+Lodging = all-in stay total OR nights * nightly rate * (1 + tax percent/100)
+          + total pet fees + other total fees. Enter these fees tax-inclusive.
+Planned travel = fuel + lodging + meals + other costs + optional wear reserve.
+Wear reserve = miles * your optional per-mile reserve (separate from fuel).
+Expected cash spending excludes that reserve.
+Inspection remaining = quoted inspection fee - planned travel.
+Difference from normal fee = remaining - normal inspection fee.
+Travel contribution = quoted fee - normal fee. It is not a spending ceiling.
+Personal budget remaining = optional budget - planned travel.
+Blank required estimates stay incomplete. Zero is valid when there is no cost.
+An estimate is not net profit: inspection/report labor and other business
+expenses are not deducted. The planner is not a tax-deduction calculator.
+Dates use calendar days across daylight-saving changes. Same-day trips have
+zero nights. The inspection must fall between travel and return dates.
+
+ACTUAL COSTS
+Record actual fuel, lodging, meals, and other cash spending for the option.
+All four must be entered (zero if appropriate) for a completed actual total.
+Until then, the app shows Recorded so far - incomplete.
+Variance = actual cash spending - estimated cash spending, excluding the
+optional wear reserve from both sides. Positive means more spent.
+Linked trips use itemized receipts and Expense Book categories. Selected receipts,
+confirmed actual miles and notes can be returned after preview in both apps.
+Earlier manual totals remain reference only and never transfer.
+
+THE EXTRA USEFUL BITS
+- Duplicate a past trip. Dates, estimates, addresses, and notes stay for review;
+  booking confirmations, cancellation dates, actual amounts, and checklist
+  completion reset. Lodging returns to Estimate and fit/schedule to Unconfirmed.
+  Inspect retained notes and dates carefully for information that no longer applies.
+- Capture lodging address/ZIP, phone/contact, confirmation, cancellation date,
+  and terms. Record cutoff time/timezone in terms. The date appears on the
+  preferred trip card and brief; there are no background notifications.
+- Print Departure Brief uses the preferred option, contact/booking information,
+  preferences, notes, estimates, checklist, and writing space. It can continue
+  onto more pages when needed. Check browser print preview before printing.
+- Archive keeps a trip intact. Restore to My Trips makes it active again.
+- Defaults affect NEW entries only; saved trips do not silently change.
+- The default checklist supports 200 nonempty lines, up to 500 characters each.
+
+DAILY PLAN AND COPY PLANNING PROMPT (INTRODUCED IN v0.1.2)
+Daily Plan uses compact day buttons and editable Morning / Afternoon / Evening /
+Notes blocks. Choose a preferred travel option, then Create Days from Trip Dates.
+This adds missing dates (up to 366 daily entries); it never replaces existing
+notes. Add Day also lets you begin with an undated entry. Each dated entry must
+have a unique date. Dates outside the preferred option's range are flagged,
+not deleted or moved. Revisit them when changing your trip or preferred option.
+The plan belongs to the trip, rather than to each alternative travel option.
+
+Copy Planning Prompt opens a reviewable, editable text preview. It defaults to
+the preferred option; if none is chosen, select the scenario you want help with.
+The preview gathers destination, dates, budget or inspection-fee context,
+preferences/pet requirements, entered estimates, and the existing daily plan.
+Changing the option regenerates the preview. Editing it does not alter your trip.
+Copy to Clipboard, then paste into your chosen AI chat. If automatic copying is
+blocked, the text is selected for Ctrl+C. RōM makes no AI or internet request.
+Inspection revenue and travel contribution are explicitly NOT a spending budget.
+The prompt asks for verifiable suggestions, time for rest, and a protected
+inspection day. It excludes the customer/trip-name field, booking confirmation,
+contact field, and suggestions scratchpad. Review any personal details you may
+have typed into preferences, assumptions or daily notes before copying.
+
+Paste useful responses into Daily Plan > Ideas to consider, then manually place
+the parts you accept into daily blocks. The scratchpad is included in saved trips
+and backups, but is excluded from prompts and the printed departure brief.
+The daily plan prints in full in the departure brief, with natural page overflow.
+Daily plans/ideas are retained when duplicating or exporting/importing a trip.
+Use v0.1.2 or newer to retain these additions when importing individual trips.
+Old trips and backups still open normally; no data migration is required.
+Click Save Changes after editing days or the ideas scratchpad.
+
+UPDATING AN EXISTING INSTALL
+Export Current Copy, Exit RōM on both computers, and copy this package's contents
+into the existing application folder, replacing matching files. KEEP Data.
+No shortcut reinstall is needed if the application stays in the same folder.
+
+SHARED FOLDER USE
+Each computer runs its own local browser/server against the same Data folder.
+Save before switching computers. If another session saved first, your stale
+save is blocked. Export Current Copy, reload the saved workspace, then reapply
+or import the specific trip changes carefully. Export Trip can preserve just
+one trip; importing it creates another copy so it will not silently overwrite.
+There is no automatic merge. Avoid editing the same workspace simultaneously.
+Exit RōM stops only this local server. Use Exit on BOTH computers
+before updating files. Closing the browser tab alone does not stop the server.
+The app listens on loopback only; it is not a public web server.
+If the application folder moves, install the shortcut again on both computers.
+
+BACKUP AND RECOVERY
+Data/trips.json holds all trips, defaults and sidebar order.
+Data/Backups holds up to 10 previous successful-save states. Older files are
+removed only after the new save succeeds. These are not off-device backups.
+Periodically Export Current Copy to another folder/device.
+To restore normally: Backup & Recovery > Restore Workspace JSON. This replaces
+ALL trips and defaults after confirmation. Review, then Save Changes.
+To recover if the app cannot read trips.json:
+1. Exit all planner sessions. Keep a copy of the entire Data folder.
+2. Rename the damaged trips.json to trips-damaged.json; do not discard it.
+3. Copy a known-good exported workspace JSON or Data/Backups JSON to trips.json.
+4. Reopen, check trips and dates, then export a fresh backup.
+A stale Data/.saving.lock may remain after a crash. Only after BOTH computers'
+planner processes have stopped, back up Data, then remove that one lock file.
+Never remove a lock while another window may still be saving.
+
+UPDATES / MAINTENANCE
+Export a backup, Exit on both computers, replace matching application files,
+and KEEP the Data folder. This package contains no Data folder to overwrite.
+The separate Repository ZIP contains source, tests, build script, and a
+plain-English maintenance guide. Do not place customer Data in GitHub.
+
+VERIFICATION LIMITS
+Automated calculation, import, UI workflow, HTTP, validation, retention, failed
+write, and save-conflict checks passed. Actual Windows shortcut creation,
+network-share behavior, and native browser print pagination still need your
+first-run check on your computers. If a save fails, edits remain on screen;
+Export Current Copy before trying Reload.
+
+INSPECTION HANDOFF (EXPENSES ADDED IN v0.1.8)
+Plan from Expense Book creates the trip from the scheduled visit. Reimports
+refresh that linked trip while preserving travel plans. Expense Book Handoff
+prepares selected itemized expenses and actual mileage/notes to return. See EXPENSE-BOOK-HANDOFF.md.
+Ordinary Duplicate/Export Trip/Import Trip copies are deliberately unlinked;
+whole-workspace backups retain their links. Requires Expense Book 3.32.47. Refresh the existing linked trip once to load
+business categories. Read EXPENSE-BOOK-HANDOFF.md before your first expense import.
+
+0.1.8 presentation refresh: Backup & Settings uses horizontal sections.
+Optional Features contains Show Default Checklist and Departure Checklist.
+It starts off; saved checklist items are kept. Enable and Save Changes to restore it.
+Travel Defaults has separate tabs and preset / exact fuel price controls.
+
+0.1.8 fuel planning: Starting fuel price and Price allowance ± replace the
+two duplicate price controls. New defaults use ±$0.10/gallon. Edit the allowance
+in Travel Defaults for future trips, or Travel & Lodging for an existing option.
+Older options keep a zero allowance until edited. Low/high cost combines the
+price range with MPG. Low price cannot fall below zero. Actual receipts and
+Expense Book transfers remain actual recorded amounts.
+
+UPDATING AN EXISTING INSTALLATION — 0.1.8
+Use the separate RoM-Update-v0.1.8.zip. Extract it and run Apply-Update.bat.
+Save/export a backup and Exit on ALL computers first. Choose your existing app
+folder containing Start-App.bat and Data. The installer verifies the app,
+backs up replaced program files and preserves Data. Keep the app closed until
+it reports success. Existing shortcuts continue to work.
+Older releases have no session markers: close both copies before this first update.
+New releases track sessions in .app-sessions. A crash may leave a marker.
+Only after closing ALL copies, remove stale files inside .app-sessions or a
+stale .app-update.lock if the error requests it. Never remove markers while running.

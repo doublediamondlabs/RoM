@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-label="RōM: a winding road toward sunrise">
+<rect width="256" height="256" rx="48" fill="#10263d"/>
+<path d="M83 103a45 45 0 0 1 90 0Z" fill="#e4bc76"/>
+<path d="M63 105h130" fill="none" stroke="#e4bc76" stroke-width="10" stroke-linecap="round"/>
+<path d="M128 34v9M76 52l7 8M180 52l-7 8" fill="none" stroke="#e4bc76" stroke-width="7" stroke-linecap="round"/>
+<path d="M120 119C75 148 170 160 92 230H158C213 167 115 148 136 119Z" fill="#73ccbf"/>
+<path d="M124 130l-1 8M132 154l10 9M146 185l-7 13M125 216l-7 9" fill="none" stroke="#10263d" stroke-width="6" stroke-linecap="round"/>
+</svg>
