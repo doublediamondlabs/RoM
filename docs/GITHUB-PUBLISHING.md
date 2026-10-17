@@ -8,12 +8,9 @@ To rename: repository → Settings → Repository name → Rename.
 To edit description/website/topics: Code page → gear beside About → Save changes.
 The README contains the AI-assisted development sentence; keep About focused on purpose.
 
-Do not change visibility while the open gates in PUBLIC-RELEASE-REVIEW.md remain.
-The owner confirmed this destination repository is newly created and has never
-contained files or commits. Start from this reviewed source; there is no prior
-project history to inspect under that confirmed condition.
+The owner reports the repository is public and the release draft has been created.
+Update the source and download assets together before publishing the preview.
 
-After approval:
 1. Put the approved source into your local repository clone, retaining its .git folder.
 2. Review changes in GitHub Desktop; exclude Data, backups, exports, dependencies and dist.
 3. Commit and push. Review the first commit and its author email before pushing.
@@ -21,7 +18,8 @@ After approval:
 5. Title: RōM v0.1.8 — first public preview. Paste RELEASE-NOTES.md and mark as prerelease.
 6. Attach the checked app and Update ZIPs plus SHA256SUMS.txt. The repository ZIP is
    optional; the committed source is already available. Save as draft for final review.
-7. Publish and change repository visibility only after the remaining review gates close.
+7. Confirm the release assets match the final source commit, then publish as a pre-release.
+   Record verification limits honestly; public preview does not imply every environment is tested.
 
 GitHub references:
 - https://docs.github.com/en/repositories/creating-and-managing-repositories/renaming-a-repository

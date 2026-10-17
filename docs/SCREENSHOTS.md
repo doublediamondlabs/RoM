@@ -10,3 +10,6 @@ no visible personal/customer details or local file paths. Images are included
 unchanged, including the screenshot border and import/unsaved status.
 They confirm visible launch/import/navigation, not save persistence, print output,
 backup/restore, shortcut setup or update behavior on Windows.
+
+The owner separately confirmed Save Changes and successful exit/reopen persistence
+on 2026-10-17. This is user-reported validation beyond what the screenshots show.

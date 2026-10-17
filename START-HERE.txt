@@ -1,4 +1,4 @@
-PUBLIC PREVIEW CANDIDATE — REVIEW ONLY; DO NOT PUBLISH YET
+PUBLIC PREVIEW — v0.1.8
 RōM — v0.1.8
 Developed by Double Diamond Labs - Adventure On!
 

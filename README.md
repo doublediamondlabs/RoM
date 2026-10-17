@@ -11,9 +11,8 @@ Developed by **Double Diamond Labs — Adventure On!**
 Built through an iterative, AI-assisted development process and tested in our daily workflow.
 Automated checks support development; they are not a guarantee that every environment or scenario is covered.
 
-> Public-release candidate v0.1.8. Not yet approved for public distribution.
-> MIT license approved. The owner confirms the destination repository is new and empty.
-> Demo screenshots are included. Remaining Windows checks and clean developer installation are pending.
+> Public preview v0.1.8 · MIT licensed · Windows launchers included.
+> See the release review for verification scope and remaining environment checks.
 
 ## What it does
 
@@ -40,7 +39,7 @@ The unsaved status is expected until **Save Changes** is selected.
 
 ## Download and start
 
-When this candidate is approved, open this repository's **Releases** section and
+Open this repository's **Releases** section and
 choose `RoM-v0.1.8.zip`. GitHub's automatically generated “Source code” download is
 intended for development. Existing users should use `RoM-Update-v0.1.8.zip`.
 

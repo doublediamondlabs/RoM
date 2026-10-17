@@ -1,9 +1,9 @@
-# RōM public-release candidate review — 2026-10-17
+# RōM public-preview review — 2026-10-17
 
-Status: **prepared for owner review, not cleared for public launch**.
-Scope: a separate source snapshot based on working RōM 0.1.7, with a 0.1.8
-candidate version, public documentation and synthetic example. Existing live apps
-and GitHub repositories have not been changed.
+Status: **public preview; verification scope recorded below**.
+Scope: a separate source snapshot based on working RōM 0.1.7, with version 0.1.8,
+public documentation and a fictional example. No trip-data schema change.
+The owner reports the prepared source is now in the public GitHub repository.
 
 ## Completed source review
 
@@ -26,7 +26,7 @@ and GitHub repositories have not been changed.
    confirmed https://github.com/doublediamondlabs/RoM was newly created and never
    populated. No earlier project commits need review if that remains the case.
    This is owner-provided information, not an independently inspected repository.
-   Review the files and author email in the first commit before pushing.
+   The owner subsequently reported uploading the prepared source to the public repository.
 2. **License — approved:** on 2026-10-17 the owner approved MIT licensing, including
    commercial reuse. LICENSE now contains the adopted terms with the project
    attribution, Copyright (c) 2026 Double Diamond Labs. Dependencies keep their own
@@ -34,18 +34,18 @@ and GitHub repositories have not been changed.
 3. **Screenshots — completed:** owner supplied Compare Options and Daily Plan
    screenshots on 2026-10-17. Both show the fictional example with no visible
    personal/customer details. Included unchanged in README. Launch, demo import
-   and navigation are visually evidenced; saving/printing and other pilot checks remain.
+   and navigation are visually evidenced. The owner also confirmed Save Changes and
+   successful exit/reopen persistence on 2026-10-17.
 4. **Developer setup:** clean online npm ci verification remains pending because
    registry access was unavailable. Tests use the local installed locked versions.
-5. **Windows pilot:** verify app launch, shortcut/icon, demo import, departure print,
+5. **Remaining Windows coverage:** shortcut/icon, departure print,
    backup/restore, and updater using a disposable copy. Automated DOM tests do not
    establish native rendering, printing, or all network-share behaviors.
 6. **Private security contact:** configure GitHub private vulnerability reporting
    or a deliberate private contact before inviting public security reports.
 
-No vulnerability-free or legally cleared claim is made. No public repository,
-release or visibility change has been performed. MIT adoption applies to this
-local candidate; no GitHub files have been changed.
+No vulnerability-free or legally cleared claim is made. Repository publication
+is owner-reported; no authenticated GitHub inspection was performed by the assistant.
 
 ## Automated verification completed
 
